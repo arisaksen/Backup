@@ -3,17 +3,27 @@
 
 import shutil, os
 from pathlib import Path
+import zipfile
 import send2trash
 
-workingDir = str(Path.home()) + '\Test' #change for where the files should be copied
+folderName = 'Test'
+
+workingDir = str(Path.home()) + '\\' + folderName #change for where the files should be copied
 os.chdir(workingDir)
+copyDir = workingDir+'_Copy'
 
 print(workingDir)
 
-if os.path.exists(workingDir+'_Copy'):
-	send2trash.send2trash(workingDir+'_Copy')
+if os.path.exists(copyDir):
+	send2trash.send2trash(copyDir)
 	
-shutil.copytree(workingDir,workingDir+'_Copy')
+shutil.copytree(workingDir,copyDir)
+
+print(Path.home())
+
+# newZip = zipfile.ZipFile(folderName+'_Copy.zip','w')
+# newZip.write(folderName+'_Copy', compress_type=zipfile.ZIP_DEFLATED)
+# newZip.close()
 
 # try/except around the whole code. Se --> sentex
 # try
