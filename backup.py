@@ -4,26 +4,29 @@
 import shutil, os
 from pathlib import Path
 import zipfile
-import send2trash
+from send2trash import send2trash
 
 folderName = 'Test'
+folderLocation = str(Path.home())
 
-workingDir = str(Path.home()) + '\\' + folderName #change for where the files should be copied
+workingDir = folderLocation + '\\' + folderName #change for where the files should be copied
 os.chdir(workingDir)
-copyDir = workingDir+'_Copy'
 
-print(workingDir)
+fileList = os.listdir()
 
-if os.path.exists(copyDir):
-	send2trash.send2trash(copyDir)
-	
-shutil.copytree(workingDir,copyDir)
+newZip = zipfile.ZipFile(folderName+'_Copy.zip','w')
+for file in fileList:
+	newZip.write(file, compress_type=zipfile.ZIP_DEFLATED)
+newZip.close()
 
-print(Path.home())
+zipPath = str(Path.home())+'\\'+folderName+'_Copy.zip'
 
-# newZip = zipfile.ZipFile(folderName+'_Copy.zip','w')
-# newZip.write(folderName+'_Copy', compress_type=zipfile.ZIP_DEFLATED)
-# newZip.close()
+if(os.path.exists(zipPath)):
+	send2trash(zipPath)
+
+shutil.move(folderName+'_Copy.zip',folderLocation)
+
+# if(__name__ == '__main__'):
 
 # try/except around the whole code. Se --> sentex
 # try
